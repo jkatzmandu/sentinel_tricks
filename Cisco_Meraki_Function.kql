@@ -1,0 +1,16 @@
+Meraki_CL
+| extend Meraki_IP = extract(@'\S+\s+\d+\s+\S+\s+(\S+)', 1, RawData),
+Device_Name = extract(@'\S+\s+\d+\s+\S+\s+\S+\s+\S+\s+(\S+)', 1, RawData),
+Log_Type = extract(@'\S+\s+\d+\s+\S+\s+\S+\s+\S+\s+\S+\s+(\S+)', 1, RawData),
+Action = extract(@'\S+\s+\d+\s+\S+\s+\S+\s+\S+\s+\S+\s+flows\s+(\S+)', 1, RawData),
+Src_IP = extract(@'src=\"?([\w\.]+)\"?', 1, RawData),
+Client_IP = extract(@'client_ip=([\w\.]+)', 1, RawData),
+Client_MAC = extract(@'client_mac=([\w\:]+)', 1, RawData),
+Src_MAC = extract(@'mac=\"?([\w\:]+)\"?', 1, RawData),
+Dst_IP = extract(@'dst=\"?([\w\.]+)\"?', 1, RawData),
+Protocol = extract(@'protocol=\"?(\w+)\"?', 1, RawData),
+Src_Port = extract(@'sport=\"?(\d+)\"?', 1, RawData),
+Dst_Port = extract(@'dport=\"?(\d+)\"?', 1, RawData),
+Event_Type = extract(@'type=\"?(\S+)\"?', 1, RawData),
+User_Agent = extract(@'agent=(.*[^request])request', 1, RawData),
+URL = extract(@'request: \S+\s+(.*)',1, RawData)
