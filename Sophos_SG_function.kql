@@ -1,0 +1,17 @@
+Syslog 
+| where HostName == "YOUR_HOSTNAME"  // edit to include your firewalls!
+| where SeverityLevel == "info"      // edit as appropriate to your environment!
+| extend UTM_Host = extract(@'\S+\s+(\S+)', 1, SyslogMessage),
+Src_IP = extract(@'srcip=\"([\w\.]+)\"', 1, SyslogMessage),
+Dst_IP = extract(@'dstip=\"([\w\.]+)\"', 1, SyslogMessage),
+Protocol = extract(@'proto=\"(\w+)\"', 1, SyslogMessage),
+Src_Port = extract(@'srcport=\"(\d+)\"', 1, SyslogMessage),
+Dst_Port = extract(@'dstport=\"(\d+)\"', 1, SyslogMessage),
+Src_MAC = extract(@'srcmac=\"([\w\:]+)\"', 1, SyslogMessage),
+Dst_MAC = extract(@'dstmac=\"([\w\:]+)\"', 1, SyslogMessage),
+Name = extract(@'name=\"([\w\:]+)\"', 1, SyslogMessage),
+Action = extract(@'action=\"([\w\:]+)\"', 1, SyslogMessage),
+Rule = extract(@'fwrule=\"([\w\:]+)\"', 1, SyslogMessage),
+IN = extract(@'initf=\"([\w\:]+)\"', 1, SyslogMessage),
+OUT = extract(@'outitf=\"([\w\:]+)\"', 1, SyslogMessage),
+TCP_Flags =extract(@'tcpflags=\"([\w\:]+)\"', 1, SyslogMessage)
