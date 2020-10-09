@@ -1,0 +1,20 @@
+GuardDutyAlert_CL // This is all embedded in nested JSON, so best to extract it out to usable info
+| extend Severity = toint(parse_json(Message).severity),
+user_id = tostring(parse_json(Message).accountId),
+Region = tostring(parse_json(Message).region),
+TimeGenerated = _timestamp_t,
+Description = tostring(parse_json(Message).description),
+// Above = Basic stuff not too far nested, Below are items from the "resource.accessKeyDetails" for our User info
+Account = tostring(parse_json(Message).resource.accessKeyDetails.principalId),
+userName = tostring(parse_json(Message).resource.accessKeyDetails.userName),
+// Below are basic items from the instanceDetails to tell us which instance/VM has issues
+Instance = tostring(parse_json(Message).resource.instanceDetails.instanceId),
+Host_IP = tostring(parse_json(Message).resource.instanceDetails.networkInterfaces.[0].privateIpAddress), // I think this may be the IP of the LogBeats setup?
+Public_IP = tostring(parse_json(Message).resource.instanceDetails.networkInterfaces.[0].publicIp), // I think this may be the IP of the LogBeats setup?
+// The IPs & Ports from the actual alert are below
+Src_IP = tostring(parse_json(Message).service.action.networkConnectionAction.localIpDetails.ipAddressV4),
+Src_Port = tostring(parse_json(Message).service.action.networkConnectionAction.localPortDetails.port),
+Dst_IP = tostring(parse_json(Message).service.action.networkConnectionAction.remoteIpDetails.ipAddressV4),
+Dst_Port = tostring(parse_json(Message).service.action.networkConnectionAction.remotePortDetails.port),
+Alert_Category = tostring(parse_json(Message).service.action.actionType),
+HostName = tostring(parse_json(Message).resource.s3BucketDetails.[0].name) // Isn't always properly populated :(
