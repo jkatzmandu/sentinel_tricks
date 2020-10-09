@@ -1,0 +1,23 @@
+// Function for Azure Sentinel which extracts Mimecast data
+// from the embedded JSON used by the Mimecast log format
+// produced from the MPE*.tgz packages Mimecast supplies for
+// Azure Sentinel log ingestion
+Mimecast_Mail_CL
+| extend mcast_json=parse_json(substring(RawData, 20))
+| extend mimecastEventId=tostring(mcast_json.mimecastEventId),
+action=tostring(mcast_json.action), 
+app=tostring(mcast_json.app),
+url=tostring(mcast_json.url), 
+fileName=tostring(mcast_json.fileName), 
+fileType=tostring(mcast_json.fileType), 
+result=tostring(mcast_json.result),
+subject=tostring(iff(isnull(mcast_json.subject),mcast_json.Subject,mcast_json.subject)), 
+fileHash=tostring(mcast_json.fileHash), 
+auditType=tostring(mcast_json.auditType),
+user=tostring(mcast_json.user), 
+Src_IP=tostring(iff(isnull(mcast_json.src),mcast_json.sendingIp,mcast_json.src)), 
+From=tostring(iff(isnull(mcast_json.fromUserEmailAddress),mcast_json.senderAddress,mcast_json.fromUserEmailAddress)),
+To=tostring(iff(isnull(mcast_json.UserEmailAddress),mcast_json.recipientAddress,mcast_json.UserEmailAddress)),
+Route=tostring(iff(isnull(mcast_json.route),mcast_json.Route,mcast_json.route)),
+headerFrom=tostring(mcast_json.headerFrom),
+Recipient=tostring(mcast_json.Recipient)
