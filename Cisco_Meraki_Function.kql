@@ -13,4 +13,7 @@ Src_Port = extract(@'sport=\"?(\d+)\"?', 1, RawData),
 Dst_Port = extract(@'dport=\"?(\d+)\"?', 1, RawData),
 Event_Type = extract(@'type=\"?(\S+)\"?', 1, RawData),
 User_Agent = extract(@'agent=(.*[^request])request', 1, RawData),
-URL = extract(@'request: \S+\s+(.*)',1, RawData)
+URL = extract(@'request: \S+\s+(.*)',1, RawData),
+Signature = extract(@'signature=\"?(\S+)\"?', 1, RawData),
+Direction = extract(@'direction=\"?(\w+)\"?', 1, RawData),
+Message = extract(@'message: (.*[^$])$', 1, RawData)
