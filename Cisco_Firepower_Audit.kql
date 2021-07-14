@@ -1,0 +1,7 @@
+Syslog | where HostName in ("FIREPOWER_HOSTS","ANOTHER_HOST")
+| extend HostName = extract(@'(\S+):',1,SyslogMessage)
+| extend UserName = extract(@'\S+: ([^@]*)@',1,SyslogMessage)
+| extend SrcHost = extract(@'@([^,]*)\,',1,SyslogMessage)
+| extend Action = extract(@'@.*\,([^,]*)\,',1,SyslogMessage)
+| extend Result = extract(@'@.*\,.*\,([^,]*)',1,SyslogMessage)
+| extend Signature = extract(@'\((\d+\:\d+)',1,SyslogMessage)
