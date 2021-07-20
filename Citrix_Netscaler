@@ -1,0 +1,15 @@
+Syslog 
+| where HostName == "NETSCALER" | project TimeGenerated, SyslogMessage
+| extend HostName = extract(@'\d+\:\d+\:\d+ \S+ (\w+)',1,SyslogMessage)
+| extend Feature = extract(@'\d+\:\d+\:\d+ \S+ \w+ \S+ : \w+ (\w+)',1,SyslogMessage)
+| extend Action = extract(@'\d+\:\d+\:\d+ \S+ \w+ \S+ : \w+ \w+ (\S+)',1,SyslogMessage)
+| extend SrcIP = iff( "" == (extract(@' Source ([\w\.]+)',1,SyslogMessage)), extract(@'- (ClientIP|Client_ip) ([\w\.]+)',2,SyslogMessage), extract(@' Source ([\w\.]+)',1,SyslogMessage))
+| extend SrcPort = iff( "" == (extract(@' Source [\d+\.]+:(\d+)',1,SyslogMessage)), extract(@'- ClientPort (\d+)',1,SyslogMessage), extract(@' Source [\d+\.]+:(\d+)',1,SyslogMessage))
+| extend DestIP = iff( "" == (extract(@'VserverServiceIP ([\w\.]+)',1,SyslogMessage)), extract(@'Destination ([\w\.]+)',1,SyslogMessage), extract(@'VserverServiceIP ([\w\.]+)',1,SyslogMessage))
+| extend DestPort = iff( "" == (extract(@'VserverServicePort ([\w\.]+)',1,SyslogMessage)), extract(@'Destination \d+\.\d+\.\d+\.\d+\:(\d+)',1,SyslogMessage), extract(@'VserverServicePort ([\w\.]+)',1,SyslogMessage))
+| extend BytesSent = extract(@'Total_bytes_send (\d+)',1,SyslogMessage)
+| extend BytesReceived = extract(@'Total_bytes_recv (\d+)',1,SyslogMessage)
+| extend NatIP = extract(@'NatIP ([\d+\.]+)',1,SyslogMessage)
+| extend NatPort = extract(@'NatIP [\d+\.]+:(\d+)',1,SyslogMessage)
+| extend SessionID = extract(@'SessionId: (\d+)',1,SyslogMessage)
+| extend UserID = extract(@'User (\S+)',1,SyslogMessage)
