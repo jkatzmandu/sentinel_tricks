@@ -16,7 +16,7 @@ Quick instructions for building the OMS Agent for a Raspberry Pi:
 5) In addition to the packages listed in that repository you may need to install: libpam-dev, libgss-dev, and ruby.
 6) From the instructions from the "master" branch URL above create the bld-omsagent/omsagent/test/config/systest.conf file.
 7) Cross fingers and run "make." I was dumb and didn't time this, but you're looking at well over an hour.
-8) -- I'm still dealing with a compile issue. More coming soon!
+8) -- I'm still dealing with a compile issue. Ruby itself seems to compile (why can't we just use the one installed on the system?) When Ruby goes to "========================= Performing Moving Ruby to intermediate directory" it craps out, complaining it can't find "ruby/config.h" ... some RTFM shows that "-I/home/pi/oms/bld-omsagent/omsagent/intermediate/Linux_ULINUX_1.0_UNKNOWN_64_Release/ruby/include/ruby-2.6.0/armv7l-linux-eabihf" is missing from the command line. When I add that, the compile fails badly as the default options complain that casting warnings should be treated as errors.
 
 # Sentinel Syslog Smarts
 In many installations I sometimes see that events are being logged twice; once as a CEF event and another time it shows up in the "Syslog" table. There are a few ways to fix this.
