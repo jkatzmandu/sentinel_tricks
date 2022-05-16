@@ -1,0 +1,5 @@
+union *
+| where TimeGenerated between (ago(30d) .. now())
+| where Type !in ("Heartbeat","SecurityAlert","SecurityIncident")
+| summarize Number_Of_Events = count() by bin(TimeGenerated, 1d), Type
+| render columnchart
