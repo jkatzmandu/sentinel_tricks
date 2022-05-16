@@ -1,0 +1,6 @@
+// show me all the Incidents created in the past 30 days, and what product created them.
+// You can add a | render timechart at the end
+SecurityIncident
+| where CreatedTime between (ago(30d) .. now())
+| extend Product = tostring(parse_json(AdditionalData.alertProductNames))
+| summarize dcount(IncidentNumber) by bin(CreatedTime, 1d), Product
